@@ -1,13 +1,17 @@
 import SwiftUI
 
+
 struct QuizView: View {
+    @ObservedObject var viewModel: QuizViewModel
+   
+
     @State var iCurrentQuestion = 0
     @State var questions = [
         "What is the capital of Assyria?",
         "What… is the air-speed velocity of an unladen African swallow?",
         "What… is the air-speed velocity of an unladen European swallow?",
         "What is 2+2?"
-        
+
     ]
     @State var answers = [
         "Nineveh",
@@ -15,20 +19,20 @@ struct QuizView: View {
         "About 20 miles per hour",
         "4"
     ]
-    
+
     enum CurrentStep {
         case ASK_QUESTION
         case MOVE_TO_NEXT
     }
     @State var currentStep = CurrentStep.ASK_QUESTION
-    
+
     var body: some View {
         VStack {
 
             Text("Quiz Program")
                 .font(.largeTitle)
             Spacer()
-            Text(questions[iCurrentQuestion])
+            Text(viewModel.questions[viewModel.currentQuestionIndex])
                 .bold()
                 .font(.title)
             Spacer()
@@ -38,7 +42,12 @@ struct QuizView: View {
                     .bold()
                     .font(.title)
             } else {
-                // by putting these on the screen the text
+
+                Text("Answer:")
+                 // Placeholder for the answer text when the button is not in 'SHOW_ANSWER' mode
+                    .bold()
+                    .font(.title)
+            }
                 // won't jump around as much when the user
                 // clicks on the 'show answer' button
                 Text(" ") // gotta put at least 1 character in here
@@ -60,9 +69,12 @@ struct QuizView: View {
             .padding()
             .background(.blue)
             .clipShape(RoundedRectangle(cornerRadius: 10))
-        }.padding()
+
+            .padding()
+        }
+
     }
-}
+
 
 struct QuizView_Previews: PreviewProvider {
     static var previews: some View {
